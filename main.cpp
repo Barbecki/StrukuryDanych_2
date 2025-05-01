@@ -4,6 +4,7 @@
 #include <fstream>
 #include "heap/heap.h"
 #include "LinkedList/LinkedList.h"
+#include "heap2/heap2.h"
 
 using namespace std;
 
@@ -110,16 +111,17 @@ int main() {
 
     while (true) {
         cout << "Wybierz implementacje kolejki priorytetowej do zbadania:\n";
-        cout << "1. Kolejka priorytetowa na bazie listy wiazanej\n";
-        cout << "2. Kolejka priorytetowa (Heap)\n";
-        cout << "3. Wyjscie\n";
+        cout << "1. Kolejka priorytetowa (lista wiazana)\n";
+        cout << "2. Kolejka priorytetowa (Heap z mapa)\n";
+        cout << "3. Kolejka priorytetowa (Heap bez mapy)\n";
+        cout << "4. Wyjscie\n";
         cout << "Wybor: ";
         char choice;
         cin >> choice;
 
         switch (choice) {
         case '1': {
-            cout << "Badanie kolejki priorytetowej opartej o liste wiazana.\n";
+            cout << "Badanie kolejki priorytetowej (Lista wiazana)\n";
             ofstream plik("pomiary_czas_PQ_LinkedList.txt");
             if (plik.is_open()) {
                 plik << "Pomiar czasu (LinkedList) - PQ:\n";
@@ -133,7 +135,7 @@ int main() {
             break;
         }
         case '2': {
-            cout << "Badanie kolejki priorytetowej (Heap).\n";
+            cout << "Badanie kolejki priorytetowej (Heap z mapa).\n";
             ofstream plik("pomiary_czas_PQ_Heap.txt");
             if (plik.is_open()) {
                 plik << "Pomiar czasu (Heap) - PQ:\n";
@@ -142,11 +144,25 @@ int main() {
 
             for (int size : sizes) {
                 cout << "Rozmiar: " << size << endl;
-                performMeasurementsPQ<PriorityQueue>(size, quantity, gen, "pomiary_czas_PQ_Heap.txt");
+                performMeasurementsPQ<heapPQ>(size, quantity, gen, "pomiary_czas_Opti_PQ_Heap.txt");
             }
             break;
         }
-        case '3':
+        case '3': {
+            cout << "Badanie kolejki priorytetowej (Heap bez mapy).\n";
+            ofstream plik("pomiary_czas_PQ_Heap.txt");
+            if (plik.is_open()) {
+                plik << "Pomiar czasu (Heap) - PQ:\n";
+                plik.close();
+            }
+
+            for (int size : sizes) {
+                cout << "Rozmiar: " << size << endl;
+                performMeasurementsPQ<heapOPQ>(size, quantity, gen, "pomiary_czas_PQ_Heap.txt");
+            }
+            break;
+        }
+        case '4':
             cout << "Wyjscie z programu.\n";
             return 0;
         default:

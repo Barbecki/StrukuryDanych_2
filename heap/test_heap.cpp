@@ -2,7 +2,7 @@
 #include "heap.h"
 
 int main() {
-    PriorityQueue pq;
+    heapPQ pq;
 
     pq.insert(10, 1);
     pq.insert(20, 5);
