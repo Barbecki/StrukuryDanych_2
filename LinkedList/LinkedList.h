@@ -1,6 +1,7 @@
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
 
+//podstawowy element listy wiązanej dwustronnej, ma wskaźniki na poprzedni oraz następny element
 struct Node {
     int value;
     int priority;
