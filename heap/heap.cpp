@@ -1,24 +1,24 @@
 #include "heap.h"
 
-long long heapPQ::globalOrder = 0;
+long long heapOPQ::globalOrder = 0;
 
-heapPQ::heapPQ()
-  : heap(new Node[INITIAL_CAPACITY])
+heapOPQ::heapOPQ()
+  : heap(new NodeOPQ[INITIAL_CAPACITY])
   , size(0)
   , capacity(INITIAL_CAPACITY)
 {}
 
-heapPQ::~heapPQ() {
+heapOPQ::~heapOPQ() {
     delete[] heap;
 }
 
-void heapPQ::swapNodes(int i, int j) {
+void heapOPQ::swapNodes(int i, int j) {
     std::swap(heap[i], heap[j]);
     indexMap[heap[i].e] = i;
     indexMap[heap[j].e] = j;
 }
 
-void heapPQ::heapify_up(int index) {
+void heapOPQ::heapify_up(int index) {
     while (index > 0) {
         int parent = (index - 1) / 2;
         if (heap[index].p > heap[parent].p
@@ -29,7 +29,7 @@ void heapPQ::heapify_up(int index) {
     }
 }
 
-void heapPQ::heapify_down(int index) {
+void heapOPQ::heapify_down(int index) {
     while (true) {
         int left = 2*index + 1, right = 2*index + 2, largest = index;
         if (left < size &&
@@ -46,24 +46,24 @@ void heapPQ::heapify_down(int index) {
     }
 }
 
-void heapPQ::insert(int e, int p) {
+void heapOPQ::insert(int e, int p) {
     if (size == capacity) {
         int newCap = capacity * 2;
-        Node* newHeap = new Node[newCap];
+        NodeOPQ* newHeap = new NodeOPQ[newCap];
         for (int i = 0; i < size; ++i) newHeap[i] = heap[i];
         delete[] heap;
         heap = newHeap;
         capacity = newCap;
     }
-    heap[size] = Node{e, p, globalOrder++};
+    heap[size] = NodeOPQ{e, p, globalOrder++};
     indexMap[e] = size;
     heapify_up(size);
     ++size;
 }
 
-Node heapPQ::extract_max() {
+NodeOPQ heapOPQ::extract_max() {
     if (size == 0) throw std::runtime_error("Queue is empty");
-    Node maxN = heap[0];
+    NodeOPQ maxN = heap[0];
     indexMap.erase(maxN.e);
     --size;
     if (size > 0) {
@@ -74,12 +74,12 @@ Node heapPQ::extract_max() {
     return maxN;
 }
 
-Node heapPQ::find_max() const {
+NodeOPQ heapOPQ::find_max() const {
     if (size == 0) throw std::runtime_error("Queue is empty");
     return heap[0];
 }
 
-void heapPQ::modify_key(int e, int new_p) {
+void heapOPQ::modify_key(int e, int new_p) {
     auto it = indexMap.find(e);
     if (it == indexMap.end()) throw std::runtime_error("Element not found");
     int idx = it->second;
@@ -89,12 +89,12 @@ void heapPQ::modify_key(int e, int new_p) {
     else             heapify_down(idx);
 }
 
-void heapPQ::print_queue() const {
+void heapOPQ::print_queue() const {
     for (int i = 0; i < size; ++i)
         std::cout << "(" << heap[i].e << "," << heap[i].p << ") ";
     std::cout << "\n";
 }
 
-int heapPQ::return_size() const {
+int heapOPQ::return_size() const {
     return size;
 }

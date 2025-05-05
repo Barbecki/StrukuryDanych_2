@@ -130,7 +130,7 @@ int main() {
 
             for (int size : sizes) {
                 cout << "Rozmiar: " << size << endl;
-                //performMeasurementsPQ<LinkedList>(size, quantity, gen, "pomiary_czas_PQ_LinkedList.txt");
+                performMeasurementsPQ<linkedListPQ>(size, quantity, gen, "pomiary_czas_PQ_LinkedList.txt");
             }
             break;
         }
@@ -144,7 +144,7 @@ int main() {
 
             for (int size : sizes) {
                 cout << "Rozmiar: " << size << endl;
-                performMeasurementsPQ<heapPQ>(size, quantity, gen, "pomiary_czas_Opti_PQ_Heap.txt");
+                performMeasurementsPQ<heapOPQ>(size, quantity, gen, "pomiary_czas_Opti_PQ_Heap.txt");
             }
             break;
         }
@@ -158,7 +158,7 @@ int main() {
 
             for (int size : sizes) {
                 cout << "Rozmiar: " << size << endl;
-                performMeasurementsPQ<heapOPQ>(size, quantity, gen, "pomiary_czas_PQ_Heap.txt");
+                performMeasurementsPQ<heapPQ>(size, quantity, gen, "pomiary_czas_PQ_Heap.txt");
             }
             break;
         }

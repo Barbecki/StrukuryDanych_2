@@ -3,15 +3,15 @@
 #include <iostream>
 
 // zmieniona nazwa, już nie koliduje z heap::Node
-struct NodeOPQ {
+struct NodePQ {
     int e;
     int p;
     long long order;
 };
 
-class heapOPQ {
+class heapPQ {
 private:
-    NodeOPQ* heap;
+    NodePQ* heap;
     int size;
     int capacity;
     static const int INITIAL_CAPACITY = 16;
@@ -21,11 +21,11 @@ private:
     void heapify_down(int index);
 
 public:
-    heapOPQ();
-    ~heapOPQ();
+    heapPQ();
+    ~heapPQ();
     void insert(int e, int p);
-    NodeOPQ extract_max();
-    NodeOPQ find_max() const;
+    NodePQ extract_max();
+    NodePQ find_max() const;
     void modify_key(int e, int new_p);
     void print_queue() const;
     int return_size() const;
