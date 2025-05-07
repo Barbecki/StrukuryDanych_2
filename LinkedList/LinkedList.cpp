@@ -1,10 +1,14 @@
 #include "linkedList.h"
 #include <iostream>
 
+
+// Konstruktor węzła – inicjalizacja wartości, priorytetu i wskaźników
 Node::Node(int v, int p) : value(v), priority(p), next(nullptr), prev(nullptr) {}
 
+// Konstruktor kolejki – początkowo lista jest pusta
 linkedListPQ::linkedListPQ() : head(nullptr), size(0) {}
 
+// Destruktor kolejki – usuwa wszystkie węzły i zwalnia pamięć
 linkedListPQ::~linkedListPQ() {
     Node* current = head;
     while (current != nullptr) {
@@ -16,6 +20,8 @@ linkedListPQ::~linkedListPQ() {
 
 void linkedListPQ::insert(int value, int priority) {
     Node* new_node = new Node(value, priority);
+    
+    // Jeśli lista jest pusta lub nowy priorytet jest większy niż w head – wstawiamy na początek
     if (head == nullptr || priority > head->priority) {
         new_node->next = head;
         if (head != nullptr) {
@@ -24,6 +30,7 @@ void linkedListPQ::insert(int value, int priority) {
         head = new_node;
     }
     else {
+        // Szukamy miejsca, gdzie nowy priorytet pasuje
         Node* current = head;
         while (current->next != nullptr && current->next->priority >= priority) {
             current = current->next;
@@ -39,6 +46,7 @@ void linkedListPQ::insert(int value, int priority) {
     size++;
 }
 
+// Funkcja usuwająca i zwracająca element o najwyższym priorytecie (head)
 Node linkedListPQ::extract_max() {
     if (head == nullptr) {
         throw std::runtime_error("Queue is empty!");
@@ -55,6 +63,7 @@ Node linkedListPQ::extract_max() {
     return result;
 }
 
+// Funkcja zwracająca element o najwyższym priorytecie bez usuwania
 Node linkedListPQ::find_max() const {
     if (head == nullptr) {
         throw std::runtime_error("Queue is empty!");
@@ -62,7 +71,7 @@ Node linkedListPQ::find_max() const {
     return *head; 
 }
 
-
+// Funkcja zmieniająca priorytet danego elementu
 void linkedListPQ::modify_key(int value, int new_priority) {
     Node* current = head;
     while (current != nullptr && current->value != value) {
@@ -72,7 +81,8 @@ void linkedListPQ::modify_key(int value, int new_priority) {
     if (current == nullptr) {
         throw std::runtime_error("Element not found");
     }
-
+    
+    // Odłączamy znaleziony element z listy
     if (current->prev != nullptr) {
         current->prev->next = current->next;
     }
@@ -85,13 +95,15 @@ void linkedListPQ::modify_key(int value, int new_priority) {
 
     delete current;
     size--;
+    // Wstawiamy ten sam element z nowym priorytetem
     insert(value, new_priority);
 }
-
+// Funkcja zwracająca aktualny rozmiar kolejki
 int linkedListPQ::return_size() const {
     return size;
 }
 
+// Funkcja wyświetlająca całą kolejkę (elementy z priorytetami)
 void linkedListPQ::print_queue() const {
     Node* current = head;
     std::cout << "Queue: ";
