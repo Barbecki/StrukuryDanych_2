@@ -21,12 +21,12 @@ public:
     linkedListPQ();
     ~linkedListPQ();
 
-    void display() const;
-    int returnSize() const;
+    void print_queue() const;
+    int return_size() const;
     void insert(int value, int priority);
-    Node findMax() const;
-    Node extractMax();
-    void modifyKey(int value, int new_priority);
+    Node find_max() const;
+    Node extract_max();
+    void modify_key(int value, int new_priority);
 
 };
 

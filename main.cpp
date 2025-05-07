@@ -10,7 +10,7 @@ using namespace std;
 
 // Funkcja wypełniająca kolejkę priorytetową 
 template <typename T>
-void fillValues(T &structure, int size, int seed, vector<int> &insertedValues) {
+void fillValues(T &structure, int size, int seed) {
     mt19937 gen(seed);
     uniform_int_distribution<int> distVal(0, 1000000);
     uniform_int_distribution<int> distPri(0, 4 * size);
@@ -18,11 +18,20 @@ void fillValues(T &structure, int size, int seed, vector<int> &insertedValues) {
     for (int i = 0; i < size; i++) {
         int x = distVal(gen); // Losowa wartość
         structure.insert(x, distPri(gen)); // Wstawiamy wartość i priorytet
-        // Dodajemy wartość do wektora
-        if (insertedValues.size() < size) {
-            insertedValues.push_back(x); 
-        }
-  
+
+    }
+}
+
+void fillValues2(int size, int seed, vector<int> &insertedValues) {
+    mt19937 gen(seed);
+    uniform_int_distribution<int> distVal(0, 1000000);
+    uniform_int_distribution<int> distPri(0, 4 * size);
+
+    for (int i = 0; i < size; i++) {
+        int x = distVal(gen);
+        int y = distPri(gen); // Losowa wartość
+        insertedValues.push_back(x); // Wstawiamy wartość i priorytet
+
     }
 }
 
@@ -37,10 +46,11 @@ long long timer(F fun) {
 
 // Funkcja mierząca wydajność operacji
 template <typename T>
-void performMeasurementsPQ(int size, int quantity, mt19937 &gen, const string &filename) {
+void performMeasurementsPQ(int size, int quantity, const string &filename) {
     uniform_int_distribution<int> distVal(0, 1000000);
     uniform_int_distribution<int> distPri(0, 4 * size);
-
+    mt19937 gen(777);
+    // Tworzymy struktury do pomiaru czasu
     long long insertTotal = 0;
     long long extractTotal = 0;
     long long findMaxTotal = 0;
@@ -52,15 +62,26 @@ void performMeasurementsPQ(int size, int quantity, mt19937 &gen, const string &f
         T structureInsert, structureExtract, structureFind, structureModify, structureSize;
         vector<int> insertedValues;
         // Wypełniamy je danymi (wartości + priorytety)
-        fillValues(structureInsert, size, size + i,insertedValues);
-        fillValues(structureExtract, size, size + i,insertedValues);
-        fillValues(structureFind, size, size + i,insertedValues);
-        fillValues(structureModify, size, size + i,insertedValues);
-        fillValues(structureSize, size, size + i,insertedValues);
+        fillValues(structureInsert, size, size + i);
+        fillValues(structureExtract, size, size + i);
+        fillValues(structureModify, size, size + i);
+        fillValues2(size, size + i, insertedValues);
 
+        // return_size
+        sizeTotal += timer([&]() {
+            structureInsert.return_size();
+        });
+
+        // find_max
+        structureInsert.find_max(); // find_max rozgrzewkowy
+        findMaxTotal += timer([&]() {
+            structureInsert.find_max();
+        });
         // insert 
         insertTotal += timer([&]() {
-            structureInsert.insert(1234, 4321);
+            int randomValue = distVal(gen); // Losowa wartość
+            int randomPriority = distPri(gen); // Losowy priorytet
+            structureInsert.insert(randomValue, randomPriority);
         });
 
         // extract_max
@@ -68,24 +89,18 @@ void performMeasurementsPQ(int size, int quantity, mt19937 &gen, const string &f
             structureExtract.extract_max(); 
         });
 
-        // find_max
-        findMaxTotal += timer([&]() {
-            structureFind.find_max();
-        });
+        
 
 
         // modifyKey
 
-        int randomValue = insertedValues[1234];
-        int newPriority = 3212;
+        int randomValue = insertedValues[distVal(gen) % insertedValues.size()];
+        int newPriority = distPri(gen);
         modifyKeyTotal += timer([&]() {
             structureModify.modify_key(randomValue, newPriority); 
         });
 
-        // return_size
-        sizeTotal += timer([&]() {
-            structureSize.return_size();
-        });
+        
     }
 
     // Zapisujemy średnie czasy do pliku
@@ -105,9 +120,9 @@ void performMeasurementsPQ(int size, int quantity, mt19937 &gen, const string &f
 int main() {
     // Przykładowe rozmiary
     int sizes[] = { 20000, 40000, 60000, 80000, 100000, 120000, 140000, 160000 };
-    int quantity = 100;
+    int quantity = 200;
 
-    mt19937 gen(777);
+    
 
     while (true) {
         cout << "Wybierz implementacje kolejki priorytetowej do zbadania:\n";
@@ -130,7 +145,7 @@ int main() {
 
             for (int size : sizes) {
                 cout << "Rozmiar: " << size << endl;
-                performMeasurementsPQ<linkedListPQ>(size, quantity, gen, "pomiary_czas_PQ_LinkedList.txt");
+                performMeasurementsPQ<linkedListPQ>(size, quantity, "pomiary_czas_PQ_LinkedList.txt");
             }
             break;
         }
@@ -144,7 +159,7 @@ int main() {
 
             for (int size : sizes) {
                 cout << "Rozmiar: " << size << endl;
-                performMeasurementsPQ<heapOPQ>(size, quantity, gen, "pomiary_czas_Opti_PQ_Heap.txt");
+                performMeasurementsPQ<heapOPQ>(size, quantity, "pomiary_czas_Opti_PQ_Heap.txt");
             }
             break;
         }
@@ -158,7 +173,7 @@ int main() {
 
             for (int size : sizes) {
                 cout << "Rozmiar: " << size << endl;
-                performMeasurementsPQ<heapPQ>(size, quantity, gen, "pomiary_czas_PQ_Heap.txt");
+                performMeasurementsPQ<heapPQ>(size, quantity, "pomiary_czas_PQ_Heap.txt");
             }
             break;
         }

@@ -39,7 +39,7 @@ void linkedListPQ::insert(int value, int priority) {
     size++;
 }
 
-Node linkedListPQ::extractMax() {
+Node linkedListPQ::extract_max() {
     if (head == nullptr) {
         throw std::runtime_error("Queue is empty!");
     }
@@ -55,7 +55,7 @@ Node linkedListPQ::extractMax() {
     return result;
 }
 
-Node linkedListPQ::findMax() const {
+Node linkedListPQ::find_max() const {
     if (head == nullptr) {
         throw std::runtime_error("Queue is empty!");
     }
@@ -63,7 +63,7 @@ Node linkedListPQ::findMax() const {
 }
 
 
-void linkedListPQ::modifyKey(int value, int new_priority) {
+void linkedListPQ::modify_key(int value, int new_priority) {
     Node* current = head;
     while (current != nullptr && current->value != value) {
         current = current->next;
@@ -88,11 +88,11 @@ void linkedListPQ::modifyKey(int value, int new_priority) {
     insert(value, new_priority);
 }
 
-int linkedListPQ::returnSize() const {
+int linkedListPQ::return_size() const {
     return size;
 }
 
-void linkedListPQ::display() const {
+void linkedListPQ::print_queue() const {
     Node* current = head;
     std::cout << "Queue: ";
     while (current != nullptr) {

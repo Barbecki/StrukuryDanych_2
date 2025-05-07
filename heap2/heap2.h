@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include <iostream>
 
-// zmieniona nazwa, już nie koliduje z heap::Node
+
 struct NodePQ {
     int e;
     int p;
