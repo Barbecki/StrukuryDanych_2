@@ -3,19 +3,19 @@
 
 //podstawowy element listy wiązanej dwukierunkowej, ma wskaźniki na poprzedni oraz następny element
 struct Node {
-    int value;
-    int priority;
-    Node* next;
-    Node* prev;
+    int value; //wartość
+    int priority; //priorytet
+    Node* next; //wskaźnik na następny element
+    Node* prev; //wskaźnik na poprzedni element
 
-    Node(int v, int p);
+    Node(int v, int p); //konstruktor, który ustawia wartość oraz priorytet
 };
 
 
 class linkedListPQ{
 private:
-    Node* head;
-    int size;
+    Node* head; // wskaźnik na pierwszy element listy
+    int size; // rozmiar listy
 
 public:
     linkedListPQ();

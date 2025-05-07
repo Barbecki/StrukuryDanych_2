@@ -17,7 +17,7 @@ linkedListPQ::~linkedListPQ() {
         delete temp;
     }
 }
-
+// Funkcja wstawiająca nowy element do kolejki z priorytetem
 void linkedListPQ::insert(int value, int priority) {
     Node* new_node = new Node(value, priority);
     

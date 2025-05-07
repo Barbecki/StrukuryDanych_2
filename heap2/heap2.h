@@ -4,18 +4,18 @@
 
 
 struct NodePQ {
-    int e;
-    int p;
-    long long order;
+    int e; // element
+    int p; // priorytet
+    long long order; // porządek dodania
 };
 
 class heapPQ {
 private:
-    NodePQ* heap;
-    int size;
-    int capacity;
-    static const int INITIAL_CAPACITY = 16;
-    static long long globalOrder;
+    NodePQ* heap; 
+    int size; // aktualny rozmiar kolejki
+    int capacity; // maksymalny rozmiar kolejki
+    static const int INITIAL_CAPACITY = 16; // początkowa pojemność kolejki
+    static long long globalOrder; //    licznik porządku dodania
 
     void heapify_up(int index);
     void heapify_down(int index);
